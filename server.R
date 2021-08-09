@@ -360,24 +360,41 @@ shinyServer(function(input, output, session) {
     } 
   )
   
-  strSrcCode <<- NULL
-  
-  output$downloadSrc <- downloadHandler(
+  strSrcCodeR <<- NULL
+  strSrcCodePy <<- NULL
+
+  output$downloadSrcR <- downloadHandler(
 
     filename = function() {
       paste0("src-code_snippet_", startClassification()$params$classifierName[[1]], ".R")
     },
     content = function(filename) {
       fileConn <- base::file(filename)
-      writeLines(strSrcCode, fileConn)
+      writeLines(strSrcCodeR, fileConn)
+      close(fileConn)
+    }
+  )
+
+  output$downloadSrcPy <- downloadHandler(
+
+    filename = function() {
+      paste0("src-code_snippet_", startClassification()$params$classifierName[[1]], ".py")
+    },
+    content = function(filename) {
+      fileConn <- base::file(filename)
+      writeLines(strSrcCodePy, fileConn)
       close(fileConn)
     }
   )
   
   
   # Module Classification: full results
-  output$cls.srcCode <- renderText( {
-    strSrcCode <<- extractSourceCode()
+  output$cls.srcCodeR <- renderText( {
+    strSrcCodeR <<- extractSourceCodeR()
+  })
+
+  output$cls.srcCodePy <- renderText( {
+    strSrcCodePy <<- extractSourceCodePy()
   })
     
   
@@ -769,12 +786,12 @@ shinyServer(function(input, output, session) {
       The user can explore the raw data set using different types of visualizations. The value ranges and distribution of features become obvious using box plots and density plots, correlations are investigated using a scatter plot matrix. This allows the user to evaluate class separability and hence understand the complexity of the classification problem. Additionally, the necessity of scaling or transformation methods can be explored.
       
       <h5>Classification pane:</h5>
-      The selected classifier is trained on the specified features, scaling method and transformation method. The model is fitted to the training data by tuning the hyperparameters using k-fold cross validation or bootstrap. The best model is then used to classify the data set and the model’s parameters can be viewed. In addition, the confusion matrix and classification metrics on the training and blind test set are reported.
+      The selected classifier is trained on the specified features, scaling method and transformation method. The model is fitted to the training data by tuning the hyperparameters using k-fold cross validation or bootstrap. The best model is then used to classify the data set and the modelâs parameters can be viewed. In addition, the confusion matrix and classification metrics on the training and blind test set are reported.
       
       <h5>Experimentation pane:</h5> 
       The experimentation pane allows to explore the effect of in-/decreasing hyperparameters of the selected model.
       For an intuitive model-user-loop an x/y-plot is used. For data sets with  more than two dimensions, two features can be selected or the data can be projected onto a two-dimensional space using PCA. Otherwise the first two features are used.
-      The model's hyperparameters can be altered using sliders with prompt feedback: the model is re-trained and the updated decision function is visualized showing the parameter’s effect on the shape of the decision function. The results on the training and test set are updated.
+      The model's hyperparameters can be altered using sliders with prompt feedback: the model is re-trained and the updated decision function is visualized showing the parameterâs effect on the shape of the decision function. The results on the training and test set are updated.
       By selecting different types of models, the flexibility of decision functions can be understood: the linear decision functions of models like LDA and linear SVM vs. the piecewise-linear decision functions of tree- and rule-based models vs. the fully flexible decision functions of ANNs, Kernel SVMs and k-NN. 
       This allows to experiment with underfitting vs. overfitting.
       <br/>
