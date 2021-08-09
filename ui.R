@@ -82,7 +82,8 @@ ui <- dashboardPage(
         tabPanel("Model", verbatimTextOutput("cls.model")),
         tabPanel("Scatter plot of test set", plotOutput("cls.scatterPlot")),
         tabPanel("Full results", verbatimTextOutput("cls.fullResults")),
-        tabPanel("Source code snippet", downloadButton("downloadSrc", "Download source code snippet"), verbatimTextOutput("cls.srcCode"))
+        tabPanel("R Source code snippet", downloadButton("downloadSrcR", "Download R source code snippet"), verbatimTextOutput("cls.srcCodeR")),
+        tabPanel("Python Source code snippet", downloadButton("downloadSrcPy", "Download python source code snippet"), verbatimTextOutput("cls.srcCodePy"))
       )
     ),
     tabItem(
