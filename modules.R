@@ -57,7 +57,11 @@ BaseModule <- R6Class("BaseModule",
                         #override in subclasses
                       },
                       
-                      toSrcCode = function(){
+                      toSrcCodeR = function(){
+                        ""
+                        #override in subclasses
+                      },
+                      toSrcCodePy = function(){
                         ""
                         #override in subclasses
                       }
@@ -130,7 +134,7 @@ FeatureSelectionModule <- R6Class("FeatureSelectionModule",
                                       invisible(flow)
                                     },
                                     
-                                    toSrcCode = function(){
+                                    toSrcCodeR = function(){
                                       strData <- 
 "
 ##### split into train and test set #####
@@ -146,6 +150,13 @@ test_data <- data[-train_idx, ]
 test_labels <- labels[-train_idx]
 "
                                       
+                                    },
+                                    toSrcCodePy = function(){
+                                      strData <-
+"
+#python code 1
+"
+
                                     }
                                     
                                   )# end of public members
@@ -207,7 +218,7 @@ ScalingModule <- R6Class("ScalingModule",
                           
                           },
                         
-                        toSrcCode = function(){
+                        toSrcCodeR = function(){
                           strPreprocessing <- ""
                           if(!is.null(self$optionSelectedScaling) && self$optionSelectedScaling != "none")
                           {
@@ -224,6 +235,22 @@ norm_factors <- preProcess(train_data, method = ", self$optionSelectedScaling, "
 #scale train and test set independently
 train_data <- predict(norm_factors, train_data)
 test_data <- predict(norm_factors, test_data)
+"
+                            )
+                          }
+                        },
+
+                        toSrcCodePy = function(){
+                          strPreprocessing <- ""
+                          if(!is.null(self$optionSelectedScaling) && self$optionSelectedScaling != "none")
+                          {
+                            if(self$optionSelectedScaling == "range")
+                              self$optionSelectedScaling <- "c(\"range\")"
+                            if(self$optionSelectedScaling == "center")
+                              self$optionSelectedScaling <- "c(\"center\", \"scale\")"
+                            strPreprocessing <- paste0(
+"
+#Python Code 2
 "
                             )
                           }
@@ -287,7 +314,7 @@ DimReductionModule <- R6Class("DimReductionModule",
                                    invisible(flow)
                                  },
                                  
-                                 toSrcCode = function(){
+                                 toSrcCodeR = function(){
                                    strTransformation <- ""
                                    
                                    if(!is.null(self$optionSelectedDimRed) && self$optionSelectedDimRed != "none")
@@ -317,6 +344,29 @@ test_data <- predict(preProc, test_data)
                                      }
                                    }
                                    
+                                 },
+                                 toSrcCodePy = function(){
+                                   strTransformation <- ""
+
+                                   if(!is.null(self$optionSelectedDimRed) && self$optionSelectedDimRed != "none")
+                                   {
+                                     if(self$optionSelectedDimRed == "t-sne" ){
+
+                                       strTransformation <-
+"
+##### projection of data #####
+#Python Code 3
+"
+                                     }else{
+                                       strTransformation <- paste0(
+"
+##### projection of data #####
+#Python Code 4
+"
+                                       )
+                                     }
+                                   }
+
                                  }
                                  
                                )# end of public members
@@ -447,7 +497,7 @@ ModelSelectionModule <- R6Class("ModelSelectionModule",
                                       invisible (flow)
                                     },
                                   
-                                  toSrcCode = function(){
+                                  toSrcCodeR = function(){
                                     strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
@@ -488,6 +538,17 @@ test_data_predictions <- predict(model, test_data)
 cmTest <- confusionMatrix(test_data_predictions, test_labels)
 print(cmTest)
 " 
+                                          )
+
+                                  },
+                                  toSrcCodePy = function(){
+                                    strTrainTest <- paste0(
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+
+# classifier parameters
+#Python Code 5
+"
                                           )
 
                                   }
