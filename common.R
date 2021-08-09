@@ -111,9 +111,9 @@ exploration <- function(flow, hyperparams)
 
 
 
-extractSourceCode <- function(){
+extractSourceCodeR <- function(){
   
-  strSrcCode <- "
+  strSrcCodeR <- "
 ##############################################
 # R source code extracted from ML pipeline
 # Classification uses the caret package
@@ -124,9 +124,28 @@ library(caret)
   "
 
   for(mod in moduleRegistry$getModules()){
-    strSrcCode <- paste0(strSrcCode, mod$toSrcCode())
+    strSrcCodeR <- paste0(strSrcCodeR, mod$toSrcCodeR())
   }
   
-  return (strSrcCode)
+  return (strSrcCodeR)
+}
+
+extractSourceCodePy <- function(){
+
+  strSrcCodePy <- "
+##############################################
+# Python source code extracted from ML pipeline
+# Classification uses the scikit-learn package
+##############################################
+
+#possibly you need to install scikit-learn
+import scikit-learn
+  "
+
+  for(mod in moduleRegistry$getModules()){
+    strSrcCodePy <- paste0(strSrcCodePy, mod$toSrcCodePy())
+  }
+
+  return (strSrcCodePy)
 }
 
