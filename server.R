@@ -390,10 +390,12 @@ shinyServer(function(input, output, session) {
   
   # Module Classification: full results
   output$cls.srcCodeR <- renderText( {
+    startClassification()
     strSrcCodeR <<- extractSourceCodeR()
   })
 
   output$cls.srcCodePy <- renderText( {
+    startClassification()
     strSrcCodePy <<- extractSourceCodePy()
   })
     
