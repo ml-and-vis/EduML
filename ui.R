@@ -7,43 +7,47 @@ source("modules.R")
 ui <- dashboardPage(
 
   dashboardHeader(title = "EduML",
-                  titleWidth = 400),
+                  titleWidth = 300),
 
   dashboardSidebar(
     tags$head(  tags$style(HTML(style.H5)) ),
-    width = 400,
+    width = 300,
     sidebarMenu(
       menuItem(
-        "Getting Started",
-        tabName = "gettingstarted",
-        icon = icon("play")
-      ),
-      menuItem(
-        "Visualisation",
-        tabName = "visualisation",
-        icon = icon("chart-bar")
-      ),
-      menuItem(
-        "Classification",
-        tabName = "classification",
-        icon = icon("table")
-      ),
-      menuItem(
-        "Exploration",
-        tabName = "exploration",
-        icon = icon("flask")
-      ),
-      menuItem(
-        "Load Own Data",
-        tabName = "loadown",
-        icon = icon("database")
-      ),
-      menuItem("About", tabName = "about", icon = icon("address-card")),
-      menuItem(
+        "Modules",
+        tabName = "modules",
         startExpanded = TRUE,
+        menuSubItem(
+          "Getting Started",
+          tabName = "gettingstarted",
+          icon = icon("play")
+        ),
+        menuSubItem(
+          "Visualisation",
+          tabName = "visualisation",
+          icon = icon("chart-bar")
+        ),
+        menuSubItem(
+          "Classification",
+          tabName = "classification",
+          icon = icon("table")
+        ),
+        menuSubItem(
+          "Exploration",
+          tabName = "exploration",
+          icon = icon("flask")
+        ),
+        menuSubItem(
+          "Load Own Data",
+          tabName = "loadown",
+          icon = icon("database")
+        ),
+        menuItem("About", tabName = "about", icon = icon("address-card"))
+      ),
+      menuItem(
         #width = 400,
         #type = "pills",
-        
+        startExpanded = TRUE,
         helpText("Configure your ML pipeline"),
         
                              
