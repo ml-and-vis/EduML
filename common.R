@@ -23,8 +23,8 @@ source("modules.R")
 ###### UI styles
 #style.H5 <- "h5 { margin-bottom: 0px; font-size: 1em; font-family: 'Lobster', cursive}" #  ; color: blue; }"
 style.H5 <- "h5 { margin-bottom: 0px; font-size: 1em; font-weight: bold}" #  ; color: blue; }"
-style.ModulePanel <- "background-color: #367fa9 ;padding: 4px;margin: 2px; offset: 2px"
-style.StepPanel   <- "background-color: #4590ac; padding: 2px;margin: 2px;offset: 2px"
+style.ModulePanel <- "background-color: #367fa9; padding: 0.5px;margin: 2px;margin-top: 0px; margin-bottom: 0px; offset: 2px; line-height: 1; font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif"
+style.StepPanel   <- "background-color: #4590ac; padding: 0.5px;margin: 1px;offset: 2px; position: middle"
 
 
 getColors <- function(n){
@@ -138,8 +138,27 @@ extractSourceCodePy <- function(){
 # Classification uses the scikit-learn package
 ##############################################
 
-#possibly you need to install scikit-learn
-import scikit-learn
+
+import numpy as np
+from matplotlib import pyplot as plt
+from sklearn import datasets
+
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
+from sklearn.dummy import DummyClassifier
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import  plot_confusion_matrix
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.decomposition import FastICA
+from sklearn.manifold import TSNE
   "
 
   for(mod in moduleRegistry$getModules()){
