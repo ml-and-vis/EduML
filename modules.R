@@ -154,7 +154,9 @@ test_labels <- labels[-train_idx]
                                     toSrcCodePy = function(){
                                       strData <-
 "
-#python code 1
+iris = datasets.load_iris()
+X, y = iris.data, iris.target
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=123)
 "
 
                                     }
@@ -244,15 +246,22 @@ test_data <- predict(norm_factors, test_data)
                           strPreprocessing <- ""
                           if(!is.null(self$optionSelectedScaling) && self$optionSelectedScaling != "none")
                           {
-                            if(self$optionSelectedScaling == "range")
-                              self$optionSelectedScaling <- "c(\"range\")"
-                            if(self$optionSelectedScaling == "center")
-                              self$optionSelectedScaling <- "c(\"center\", \"scale\")"
-                            strPreprocessing <- paste0(
+                            if(self$optionSelectedScaling == "center"){
+                              #z-score scaling
+                              strPreprocessing <- paste0(
+                                "
+#scaling of input data 
+scaler = StandardScaler().fit(X_train, y_train)
 "
-#Python Code 2
+                              )
+                            }else if(self$optionSelectedScaling == "range"){
+                              strPreprocessing <- paste0(
 "
-                            )
+#scaling of input data
+scaler = MinMaxScaler().fit(X_train, y_train)
+"
+                              )
+                            }
                           }
                         }
                         
@@ -350,18 +359,29 @@ test_data <- predict(preProc, test_data)
 
                                    if(!is.null(self$optionSelectedDimRed) && self$optionSelectedDimRed != "none")
                                    {
-                                     if(self$optionSelectedDimRed == "t-sne" ){
+                                     if(self$optionSelectedDimRed == "t-sne"){
 
                                        strTransformation <-
+self$optionSelectedTrainingMethod
 "
 ##### projection of data #####
-#Python Code 3
+tsne = TSNE(n_components=2).fit(X_train, y_train)
+
 "
-                                     }else{
+                                     }else if (self$optionSelectedDimRed == "pca"){
                                        strTransformation <- paste0(
 "
 ##### projection of data #####
-#Python Code 4
+pca = PCA(n_components=2).fit(X_train, y_train)
+
+"
+                                       )
+                                     }else if (self$optionSelectedDimRed == "ica"){
+                                       strTransformation <- paste0(
+                                         "
+##### projection of data #####
+fastICA = FastICA(n_components=2).fit(X_train, y_train)
+
 "
                                        )
                                      }
@@ -542,16 +562,106 @@ print(cmTest)
 
                                   },
                                   toSrcCodePy = function(){
+                                    plot <- 
+"
+
+np.set_printoptions(precision=2)
+
+# Plot non-normalized confusion matrix
+titles_options = [(\"Confusion matrix, without normalization\", None),
+                  (\"Normalized confusion matrix\", 'true')]
+for title, normalize in titles_options:
+    disp = plot_confusion_matrix(classifier, X_test, y_test,
+                                 display_labels=class_names,
+                                 cmap=plt.cm.Blues,
+                                 normalize=normalize)
+    disp.ax_.set_title(title)
+
+    print(title)
+    print(disp.confusion_matrix)
+"
+                                    if(self$optionSelectedClassifierName == "knn"){
                                     strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-
-# classifier parameters
-#Python Code 5
-"
+classifier = KNeighborsClassifier().fit(X_train, y_train)
+", plot
                                           )
+                                    } else if (self$optionSelectedClassifierName == "lda"){
+                                      strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = LinearDiscriminantAnalysis().fit(X_train, y_train)
+", plot
+                                        ) 
+                                    } else if (self$optionSelectedClassifierName == "qda"){
+                                        strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = QuadraticDiscriminantAnalysis().fit(X_train, y_train)
+" , plot
+                                        )
+                                    } else if (self$optionSelectedClassifierName == "rpart2"){
+                                        strTrainTest <- paste0(
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = DecisionTreeClassifier().fit(X_train, y_train)
+", plot
+                                        )
+                                      } else if (self$optionSelectedClassifierName == "rf"){
+                                        strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = RandomForestClassifier().fit(X_train, y_train)
+", plot
+                                        )
+                                      } else if (self$optionSelectedClassifierName == "svmLinear"){
+                                        strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = SVC(kernel='linear', C=0.01).fit(X_train, y_train)
+", plot
+                                          ) 
+                                        } else if (self$optionSelectedClassifierName == "svmPoly") {
+                                          strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = SVC(kernel='poly', C=0.01).fit(X_train, y_train)
+", plot
+                                          )
+                                        } else if (self$optionSelectedClassifierName == "svmRadial"){
+                                          strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = SVC(kernel='rbf', C=0.01).fit(X_train, y_train)
+", plot
+                                          )
+                                        } else if (self$optionSelectedClassifierName == "nnet"){
+                                          strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = MLPClassifier(hidden_layer_sizes=1).fit(X_train, y_train)
+", plot
+                                          )
+                                        } else if (self$optionSelectedClassifierName == "OneR"){
+                                          strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = DummyClassifier().fit(X_train, y_train)
+", plot
+                                          )
+                                        } else if (self$optionSelectedClassifierName == "JRip"){
+                                          strTrainTest <- paste0 (
+"
+##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
+classifier = DummyClassifier().fit(X_train, y_train)
+", plot
+                                          )
+                                        }
+                                      
+                                    }
 
-                                  }
+
 
                                 )# end of public members
 )
