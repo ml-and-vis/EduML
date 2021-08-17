@@ -23,9 +23,9 @@ source("modules.R")
 ###### UI styles
 #style.H5 <- "h5 { margin-bottom: 0px; font-size: 1em; font-family: 'Lobster', cursive}" #  ; color: blue; }"
 style.H5 <- "h5 { margin-bottom: 0px; font-size: 1em; font-weight: bold}" #  ; color: blue; }"
-style.ModulePanel <- "background-color: #367fa9; padding: 0.5px;margin: 2px;margin-top: 0px; margin-bottom: 0px; offset: 2px; line-height: 1; font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif"
-style.StepPanel   <- "background-color: #4590ac; padding: 0.5px;margin: 1px;offset: 2px; position: middle"
-
+style.ModulePanel <- "background-color: #367fa9; padding: 0.5px;margin: 1px;margin-top: 0px; margin-bottom: 0px; offset: 1px; line-height: 1; font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif"
+style.StepPanel   <- "background-color: #4590ac; padding: 0.5px;margin: 1px;offset: 1px; position: middle"
+style.ConditionalPanel <- "margin:0.5px; padding: 0.5px" 
 
 getColors <- function(n){
   colors <- pals::cols25()

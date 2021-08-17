@@ -14,7 +14,7 @@ ui <- dashboardPage(
     width = 300,
     sidebarMenu(
       menuItem(
-        "Modules",
+        "Menu",
         tabName = "modules",
         startExpanded = TRUE,
         menuSubItem(
@@ -23,7 +23,7 @@ ui <- dashboardPage(
           icon = icon("play")
         ),
         menuSubItem(
-          "Visualisation",
+          "Input data",
           tabName = "visualisation",
           icon = icon("chart-bar")
         ),
@@ -65,7 +65,7 @@ ui <- dashboardPage(
     tabItems(tabItem(tabName = "gettingstarted",
             htmlOutput("help.text")),
     tabItem(tabName = "visualisation",
-            h3("Visualisation"),
+            h3("Input data"),
             tabsetPanel(
               tabPanel("Scatter plot matrix", plotOutput("vis.scatterPlot")),
               tabPanel("Parallel coordinates", plotOutput("vis.parCoordsPlot")),

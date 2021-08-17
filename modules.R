@@ -38,13 +38,15 @@ BaseModule <- R6Class("BaseModule",
                       options = NULL, # add options in subclasses
                       createUIPanel = function() {
                           wellPanel(style = style.ModulePanel, 
-                                             fluidRow(
-                                               column(8, h5(self$nameUI)), 
-                                               column(2, checkboxInput(self$shortName, '', TRUE) )
-                                             ),
-                                             conditionalPanel(condition = paste("input.", self$shortName), 
-                                              self$innerPanel()
-                                            )  
+                                            h5(self$nameUI), 
+                                            self$innerPanel()
+                                            #fluidRow(
+                                              # column(8, h5(self$nameUI)), 
+                                              # column(2, checkboxInput(self$shortName, '', TRUE) )
+                                             #),
+                                             #conditionalPanel(style=style.ConditionalPanel, condition = paste("input.", self$shortName), 
+                                             # self$innerPanel()
+                                            #)  
                           )
                         },
                       innerPanel = function(){
@@ -444,7 +446,7 @@ ClassificationBaseModule <- R6Class("ClassificationBaseModule",
                                               selectInput("mod.modelSelection.selClassifier", 
                                                           label = "Classifier",
                                                           choices = names(self$options.classifierNames),
-                                                          selected = names(self$classifierNames)[1]
+                                                          selected = names(self$classifierNames)[3]
                                               ),
                                               selectInput("mod.modelSelection.selTrainingMethod", 
                                                           label = "Parameter tuning",
