@@ -158,7 +158,7 @@ test_labels <- labels[-train_idx]
 "
 iris = datasets.load_iris()
 X, y = iris.data, iris.target
-X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=123)
+train_data, test_data, train_labels, test_labels = train_test_split(X, y, test_size=0.5, random_state=123)
 "
 
                                     }
@@ -253,14 +253,20 @@ test_data <- predict(norm_factors, test_data)
                               strPreprocessing <- paste0(
                                 "
 #scaling of input data 
-scaler = StandardScaler().fit(X_train, y_train)
+scaler = StandardScaler().fit(train_data)
+
+train_data = scaler.transform(train_data)
+test_data = scaler.transform(test_data)
 "
                               )
                             }else if(self$optionSelectedScaling == "range"){
                               strPreprocessing <- paste0(
 "
 #scaling of input data
-scaler = MinMaxScaler().fit(X_train, y_train)
+scaler = MinMaxScaler().fit(train_data)
+
+train_data = scaler.transform(train_data)
+test_data = scaler.transform(test_data)
 "
                               )
                             }
@@ -367,14 +373,14 @@ test_data <- predict(preProc, test_data)
 self$optionSelectedTrainingMethod
 "
 ##### projection of data #####
-tsne = TSNE(n_components=2).fit(X_train, y_train)
+tsne = TSNE().fit_transform(train_data)
 
 "
                                      }else if (self$optionSelectedDimRed == "pca"){
                                        strTransformation <- paste0(
 "
 ##### projection of data #####
-pca = PCA(n_components=2).fit(X_train, y_train)
+pca = PCA().fit_transform(train_data)
 
 "
                                        )
@@ -382,7 +388,7 @@ pca = PCA(n_components=2).fit(X_train, y_train)
                                        strTransformation <- paste0(
                                          "
 ##### projection of data #####
-fastICA = FastICA(n_components=2).fit(X_train, y_train)
+fastIca = FastICA().fit_transform(train_data)
 
 "
                                        )
@@ -567,96 +573,96 @@ print(cmTest)
                                     plot <- 
 "
 
-np.set_printoptions(precision=2)
+model.fit(train_data, train_labels)
 
-# Plot non-normalized confusion matrix
-titles_options = [(\"Confusion matrix, without normalization\", None),
-                  (\"Normalized confusion matrix\", 'true')]
-for title, normalize in titles_options:
-    disp = plot_confusion_matrix(classifier, X_test, y_test,
-                                 display_labels=class_names,
-                                 cmap=plt.cm.Blues,
-                                 normalize=normalize)
-    disp.ax_.set_title(title)
+# classification of test set
+predictions = model.predict(test_data)
 
-    print(title)
-    print(disp.confusion_matrix)
+print(\"### Results on test set: ###\")
+
+acc = accuracy_score(test_labels, predictions)
+
+print(\"Overall accuracy: \", acc)
+                                    
+print(\"Confusion matrix\")
+cm = confusion_matrix(test_labels, predictions)
+print(cm)
 "
                                     if(self$optionSelectedClassifierName == "knn"){
                                     strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = KNeighborsClassifier().fit(X_train, y_train)
+model = KNeighborsClassifier(n_neighbors = 2)
 ", plot
                                           )
                                     } else if (self$optionSelectedClassifierName == "lda"){
                                       strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = LinearDiscriminantAnalysis().fit(X_train, y_train)
+model = LinearDiscriminantAnalysis()
 ", plot
                                         ) 
                                     } else if (self$optionSelectedClassifierName == "qda"){
                                         strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = QuadraticDiscriminantAnalysis().fit(X_train, y_train)
+model = QuadraticDiscriminantAnalysis()
 " , plot
                                         )
                                     } else if (self$optionSelectedClassifierName == "rpart2"){
                                         strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = DecisionTreeClassifier().fit(X_train, y_train)
+model = DecisionTreeClassifier()
 ", plot
                                         )
                                       } else if (self$optionSelectedClassifierName == "rf"){
                                         strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = RandomForestClassifier().fit(X_train, y_train)
+model = RandomForestClassifier()
 ", plot
                                         )
                                       } else if (self$optionSelectedClassifierName == "svmLinear"){
                                         strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = SVC(kernel='linear', C=0.01).fit(X_train, y_train)
+model = SVC(kernel= 'linear')
 ", plot
                                           ) 
                                         } else if (self$optionSelectedClassifierName == "svmPoly") {
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = SVC(kernel='poly', C=0.01).fit(X_train, y_train)
+model = SVC(kernel= 'poly')
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "svmRadial"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = SVC(kernel='rbf', C=0.01).fit(X_train, y_train)
+model = SVC(kernel= 'rbf')
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "nnet"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = MLPClassifier(hidden_layer_sizes=1).fit(X_train, y_train)
+model = MLPClassifier(hidden_layer_sizes= 1)
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "OneR"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = DummyClassifier().fit(X_train, y_train)
+model = DummyClassifier()
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "JRip"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-classifier = DummyClassifier().fit(X_train, y_train)
+model = DummyClassifier()
 ", plot
                                           )
                                         }
