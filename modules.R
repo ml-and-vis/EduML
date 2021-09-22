@@ -572,7 +572,6 @@ print(cmTest)
                                   toSrcCodePy = function(){
                                     plot <- 
 "
-
 model.fit(train_data, train_labels)
 
 # classification of test set
@@ -592,7 +591,11 @@ print(cm)
                                     strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = KNeighborsClassifier(n_neighbors = 2)
+k_range = list(range(1,5))
+
+param_grid = dict(n_neighbors = k_range)
+
+model = GridSearchCV(KNeighborsClassifier(), param_grid,cv=10, scoring='accuracy')
 ", plot
                                           )
                                     } else if (self$optionSelectedClassifierName == "lda"){
@@ -613,35 +616,61 @@ model = QuadraticDiscriminantAnalysis()
                                         strTrainTest <- paste0(
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = DecisionTreeClassifier()
+k_range = list(range(1,5))
+
+param_grid = dict(max_depth = k_range)
+
+model = GridSearchCV(DecisionTreeClassifier(), param_grid,cv=10, scoring='accuracy')
 ", plot
                                         )
                                       } else if (self$optionSelectedClassifierName == "rf"){
                                         strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = RandomForestClassifier()
+k_range = list(range(1,5))
+
+param_grid = dict(max_depth = k_range)
+
+model = GridSearchCV(RandomForestClassifier(), param_grid, cv=10, scoring='accuracy')
 ", plot
                                         )
                                       } else if (self$optionSelectedClassifierName == "svmLinear"){
                                         strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = SVC(kernel= 'linear')
+k_range = list(range(1,5))
+
+param_grid = {'C': [0.1, 1, 10, 100, 1000],
+              'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+              'kernel': ['linear']}
+
+model = GridSearchCV(SVC(),param_grid, cv=10, scoring='accuracy')
 ", plot
                                           ) 
                                         } else if (self$optionSelectedClassifierName == "svmPoly") {
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = SVC(kernel= 'poly')
+k_range = list(range(1,5))
+
+param_grid = {'C': [0.1, 1, 10, 100, 1000],
+              'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+              'kernel': ['poly']}
+
+model = GridSearchCV(SVC(),param_grid, cv=10, scoring='accuracy')
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "svmRadial"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = SVC(kernel= 'rbf')
+k_range = list(range(1,5))
+
+param_grid = {'C': [0.1, 1, 10, 100, 1000],
+              'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+              'kernel': ['rbf']}
+
+model = GridSearchCV(SVC(),param_grid, cv=10, scoring='accuracy')
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "nnet"){
