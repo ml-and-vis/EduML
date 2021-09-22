@@ -152,7 +152,7 @@ from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.dummy import DummyClassifier
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
