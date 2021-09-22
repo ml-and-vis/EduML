@@ -414,9 +414,9 @@ ClassificationBaseModule <- R6Class("ClassificationBaseModule",
                                   # classifiers: UI names and caret names
                                   #all available models: https://topepo.github.io/caret/available-models.html
                                   options.classifierNames = list(
+                                    "k-NN" = "knn",
                                     "Linear Discriminant Analysis" = "lda",  #pack MASS
                                     "Quadratic Discriminant Analysis" = "qda",   #pack MASS
-                                    "k-NN" = "knn",
                                     "Decision Tree (CART)" = "rpart2",
                                     "Random forest" = "rf",  #pack. randomForest
                                     "SVM (linear, soft-margin)" = "svmLinear", #kernlab
