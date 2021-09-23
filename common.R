@@ -135,16 +135,12 @@ extractSourceCodePy <- function(){
   strSrcCodePy <- "
 ##############################################
 # Python source code extracted from ML pipeline
-# Classification uses the scikit-learn package
+# Classification uses the scikit-learn packages
 ##############################################
 
-
-import numpy as np
-from matplotlib import pyplot as plt
 from sklearn import datasets
 
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -154,10 +150,8 @@ from sklearn.dummy import DummyClassifier
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, confusion_matrix
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-from sklearn.decomposition import FastICA
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.decomposition import PCA, FastICA
 from sklearn.manifold import TSNE
   "
 
