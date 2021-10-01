@@ -677,7 +677,13 @@ model = GridSearchCV(SVC(),param_grid, cv=10, scoring='accuracy')
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = MLPClassifier(hidden_layer_sizes= 1)
+parameter_grid = {
+    'hidden_layer_sizes': [(1),(25)],
+    'alpha': [0.01, 0.8],
+}
+
+##### Training of the classifier \"nnet\" #####
+model = GridSearchCV(MLPClassifier(random_state= 1,max_iter=3000),parameter_grid)
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "OneR"){
