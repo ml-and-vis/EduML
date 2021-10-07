@@ -690,14 +690,16 @@ model = GridSearchCV(MLPClassifier(random_state= 1,max_iter=3000),parameter_grid
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = DummyClassifier()
+
+#scikit-learn does not provide the OneR classifier
 ", plot
                                           )
                                         } else if (self$optionSelectedClassifierName == "JRip"){
                                           strTrainTest <- paste0 (
 "
 ##### Training of the classifier \"", self$optionSelectedClassifierName, "\" #####
-model = DummyClassifier()
+
+#scikit-learn does not provide the JRip classifier
 ", plot
                                           )
                                         }
